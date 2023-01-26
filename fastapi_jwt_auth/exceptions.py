@@ -19,6 +19,15 @@ class JWTDecodeError(AuthJWTException):
     def __init__(self,status_code: int, message: str):
         self.status_code = status_code
         self.message = message
+        
+class JWTSignatureExpired(AuthJWTException):
+    """
+    An error verifying signature expiration 
+    """
+    def __init__(self,status_code: int, message: str):
+        self.status_code = status_code
+        self.message = message
+
 
 class CSRFError(AuthJWTException):
     """

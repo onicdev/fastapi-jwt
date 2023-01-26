@@ -8,6 +8,7 @@ from fastapi_jwt_auth.exceptions import (
     InvalidHeaderError,
     CSRFError,
     JWTDecodeError,
+    JWTSignatureExpired,
     RevokedTokenError,
     MissingTokenError,
     AccessTokenRequired,
@@ -665,6 +666,8 @@ class AuthJWT(AuthConfig):
                 leeway=self._decode_leeway,
                 algorithms=algorithms
             )
+        except jwt.ExpiredSignatureError as err:
+            raise JWTSignatureExpired(status_code=422, message=str(err))
         except Exception as err:
             raise JWTDecodeError(status_code=422,message=str(err))
 
