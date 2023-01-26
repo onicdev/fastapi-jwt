@@ -157,12 +157,18 @@ class AuthJWT(AuthConfig):
             raise TypeError("user_claims must be a dictionary")
 
         # Data section
-        reserved_claims = {
-            "sub": subject,
-            "iat": self._get_int_from_datetime(datetime.now(timezone.utc)),
-            "nbf": self._get_int_from_datetime(datetime.now(timezone.utc)),
-            "jti": self._get_jwt_identifier()
-        }
+        reserved_claims = {}
+        if 'sub' in self._enabled_reserved_claims:
+            reserved_claims['sub'] = subject
+
+        if 'iat' in self._enabled_reserved_claims:
+            reserved_claims['iat'] = self._get_int_from_datetime(datetime.now(timezone.utc))
+
+        if 'nbf' in self._enabled_reserved_claims:
+            reserved_claims['nbf'] = self._get_int_from_datetime(datetime.now(timezone.utc))
+
+        if 'jti' in self._enabled_reserved_claims:
+            reserved_claims['jti'] = self._get_jwt_identifier()
 
         custom_claims = {"type": type_token}
 

@@ -25,6 +25,7 @@ class LoadConfig(BaseModel):
     authjwt_header_type: Optional[StrictStr] = "Bearer"
     authjwt_access_token_expires: Optional[Union[StrictBool,StrictInt,timedelta]] = timedelta(minutes=15)
     authjwt_refresh_token_expires: Optional[Union[StrictBool,StrictInt,timedelta]] = timedelta(days=30)
+    authjwt_enabled_reserved_claims: Optional[Sequence[StrictStr]] = {'sub','iat', 'nbf', 'jti'}
     # option for create cookies
     authjwt_access_cookie_key: Optional[StrictStr] = "access_token_cookie"
     authjwt_refresh_cookie_key: Optional[StrictStr] = "refresh_token_cookie"

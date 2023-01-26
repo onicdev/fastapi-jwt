@@ -23,6 +23,7 @@ class AuthConfig:
     _token_in_denylist_callback = None
     _access_token_expires = timedelta(minutes=15)
     _refresh_token_expires = timedelta(days=30)
+    _enabled_reserved_claims = {'sub','iat', 'nbf', 'jti'}
 
     # option for create cookies
     _access_cookie_key = "access_token_cookie"
@@ -73,6 +74,7 @@ class AuthConfig:
             cls._header_type = config.authjwt_header_type
             cls._access_token_expires = config.authjwt_access_token_expires
             cls._refresh_token_expires = config.authjwt_refresh_token_expires
+            cls._enabled_reserved_claims = config.authjwt_enabled_reserved_claims
             # option for create cookies
             cls._access_cookie_key = config.authjwt_access_cookie_key
             cls._refresh_cookie_key = config.authjwt_refresh_cookie_key
