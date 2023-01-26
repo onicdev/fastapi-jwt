@@ -22,7 +22,7 @@ class JWTDecodeError(AuthJWTException):
         
 class JWTSignatureExpired(AuthJWTException):
     """
-    An error verifying signature expiration 
+    An error checking signature expiration 
     """
     def __init__(self,status_code: int, message: str):
         self.status_code = status_code
