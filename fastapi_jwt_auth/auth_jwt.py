@@ -642,7 +642,7 @@ class AuthJWT(AuthConfig):
         if raw_token['type'] in self._denylist_token_checks:
             self._check_token_is_revoked(raw_token)
 
-    def _verified_token(self,encoded_token: str, issuer: Optional[str] = None) -> Dict[str,Union[str,int,bool]]:
+    def _verified_token(self,encoded_token: str, issuer: Optional[str] = None, options: Optional[dict] = None) -> Dict[str,Union[str,int,bool]]:
         """
         Verified token and catch all error from jwt package and return decode token
 
@@ -670,7 +670,8 @@ class AuthJWT(AuthConfig):
                 issuer=issuer,
                 audience=self._decode_audience,
                 leeway=self._decode_leeway,
-                algorithms=algorithms
+                algorithms=algorithms,
+                options=options,
             )
         except jwt.ExpiredSignatureError as err:
             raise JWTSignatureExpired(status_code=422, message=str(err))
@@ -811,7 +812,7 @@ class AuthJWT(AuthConfig):
                 if self.jwt_in_cookies:
                     self._verify_and_get_jwt_in_cookies('access',self._request,fresh=True)
 
-    def get_raw_jwt(self,encoded_token: Optional[str] = None) -> Optional[Dict[str,Union[str,int,bool]]]:
+    def get_raw_jwt(self,encoded_token: Optional[str] = None, options: Optional[dict] = None) -> Optional[Dict[str,Union[str,int,bool]]]:
         """
         this will return the python dictionary which has all of the claims of the JWT that is accessing the endpoint.
         If no JWT is currently present, return None instead
@@ -822,7 +823,7 @@ class AuthJWT(AuthConfig):
         token = encoded_token or self._token
 
         if token:
-            return self._verified_token(token)
+            return self._verified_token(token, options=options)
         return None
 
     def get_jti(self,encoded_token: str) -> str:
