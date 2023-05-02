@@ -673,6 +673,8 @@ class AuthJWT(AuthConfig):
                 algorithms=algorithms,
                 options=options,
             )
+        except jwt.DecodeError as err:
+            raise JWTDecodeError(status_code=422,message=str(err))
         except jwt.ExpiredSignatureError as err:
             raise JWTSignatureExpired(status_code=422, message=str(err))
         except Exception as err:
